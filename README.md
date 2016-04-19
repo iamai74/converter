@@ -1,1 +1,1 @@
-testing task project for GDG Ekb 2016
+testing task project for Study Jams 2016 (GDG Ekb)
