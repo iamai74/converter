@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Конвертор</string>
+    <string-array name="first">
+        <item>метр</item>
+        <item>фут</item>
+        <item>миля</item>
+        <item>килограмм</item>
+        <item>фунт</item>
+        <item>унция</item>
+        <item>литр</item>
+        <item>галлон</item>
+        <item>баррель</item>
+    </string-array>
+    <string-array name="length">
+        <item>метр</item>
+        <item>фут</item>
+        <item>миля</item>
+    </string-array>
+    <string-array name="weight">
+        <item>килограмм</item>
+        <item>фунт</item>
+        <item>унция</item>
+    </string-array>
+    <string-array name="volume">
+        <item>литр</item>
+        <item>галлон</item>
+        <item>баррель</item>
+    </string-array>
+</resources>
