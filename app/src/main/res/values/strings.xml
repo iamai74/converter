@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Converter</string>
+    <string-array name="first">
+        <item>meter</item>
+        <item>ft</item>
+        <item>mile</item>
+        <item>kg</item>
+        <item>lb</item>
+        <item>oz</item>
+        <item>liter</item>
+        <item>gal</item>
+        <item>barrel</item>
+    </string-array>
+    <string-array name="length">
+        <item>meter</item>
+        <item>ft</item>
+        <item>mile</item>
+    </string-array>
+    <string-array name="weight">
+        <item>kg</item>
+        <item>lb</item>
+        <item>oz</item>
+    </string-array>
+    <string-array name="volume">
+        <item>liter</item>
+        <item>gal</item>
+        <item>barrel</item>
+    </string-array>
 </resources>

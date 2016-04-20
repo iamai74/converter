@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity{
     private ArrayAdapter adapterLength;
     private ArrayAdapter adapterWeight;
     private ArrayAdapter adapterVolume;
+    private ArrayAdapter adapterMain;
+    private ArrayAdapter lastAdaptor;
+    private ArrayAdapter newAdaptor;
 
     Converter converter;
 
@@ -31,7 +34,12 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        converter = new Converter();
+
         //адапторы
+        adapterMain = ArrayAdapter.createFromResource(this,
+                R.array.first, android.R.layout.simple_spinner_item);
+        adapterMain.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterLength = ArrayAdapter.createFromResource(this,
                 R.array.length, android.R.layout.simple_spinner_item);
         adapterLength.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -52,13 +60,16 @@ public class MainActivity extends AppCompatActivity{
         firstEdit = (EditText) findViewById(R.id.editText);
         secondEdit = (EditText) findViewById(R.id.editText2);
 
+        firstSpinner.setAdapter(adapterMain);
+        firstEdit.setText(String.valueOf(0));
+
         //поведение первого спиннера при изменении
         firstSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 firstTextView.setText(String.valueOf(firstSpinner.getSelectedItem()));
+                firstColumnEdit();
                 selectSecondSpinnerAdaptor(firstSpinner.getSelectedItemPosition());
-                converter.setSelect1(firstSpinner.getSelectedItemPosition());
             }
 
             @Override
@@ -71,7 +82,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 secontTextView.setText(String.valueOf(secondSpinner.getSelectedItem()));
-                converter.setSelect2(secondSpinner.getSelectedItemPosition());
+                secondColumnEdit();
             }
 
             @Override
@@ -79,39 +90,59 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
         firstEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                firstColumnEdit();
                 return false;
             }
         });
         secondEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                secondColumnEdit();
                 return false;
             }
         });
     }
-
+    private void firstColumnEdit() {
+        converter.setSelect1(firstSpinner.getSelectedItemPosition());
+        converter.setSelect2(secondSpinner.getSelectedItemPosition());
+        converter.setValue1(Float.parseFloat(firstEdit.getText().toString()));
+        converter.setChangeParam("first");
+        secondEdit.setText(String.valueOf(converter.getValue2()));
+    }
+    private void secondColumnEdit() {
+        converter.setSelect1(firstSpinner.getSelectedItemPosition());
+        converter.setSelect2(secondSpinner.getSelectedItemPosition());
+        converter.setValue2(Float.parseFloat(secondEdit.getText().toString()));
+        converter.setChangeParam("second");
+        firstEdit.setText(String.valueOf(converter.getValue1()));
+    }
 
     private void selectSecondSpinnerAdaptor (int selected) {
+        lastAdaptor = (ArrayAdapter) secondSpinner.getAdapter();
         switch (selected) {
             case 0:
             case 1:
             case 2:
-                secondSpinner.setAdapter(adapterLength);
+                newAdaptor = adapterLength;
                 break;
             case 3:
             case 4:
             case 5:
-                secondSpinner.setAdapter(adapterWeight);
+                newAdaptor = adapterWeight;
                 break;
             case 6:
             case 7:
             case 8:
-                secondSpinner.setAdapter(adapterVolume);
+                newAdaptor = adapterVolume;
                 break;
             default: break;
+        }
+        if (lastAdaptor!=newAdaptor){
+            secondSpinner.setAdapter(newAdaptor);
         }
     }
 }
