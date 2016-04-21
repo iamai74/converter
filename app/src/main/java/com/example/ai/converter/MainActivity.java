@@ -2,6 +2,7 @@ package com.example.ai.converter;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,8 +15,6 @@ public class MainActivity extends AppCompatActivity{
 
     private Spinner firstSpinner;
     private Spinner secondSpinner;
-    private int selected1;
-    private int selected2;
     private TextView firstTextView;
     private TextView secontTextView;
     private EditText firstEdit;
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 secontTextView.setText(String.valueOf(secondSpinner.getSelectedItem()));
-                secondColumnEdit();
+                firstColumnEdit();
             }
 
             @Override
@@ -98,6 +97,14 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         });
+        firstEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(!hasFocus) {
+                    firstColumnEdit();
+                }
+            }
+        });
         secondEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -105,19 +112,37 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         });
+        secondEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                secondColumnEdit();
+            }
+        });
     }
     private void firstColumnEdit() {
         converter.setSelect1(firstSpinner.getSelectedItemPosition());
         converter.setSelect2(secondSpinner.getSelectedItemPosition());
-        converter.setValue1(Float.parseFloat(firstEdit.getText().toString()));
         converter.setChangeParam("first");
+        try {
+            converter.setValue1(Float.parseFloat(firstEdit.getText().toString()));
+        }catch (Exception e){
+            Log.i("Exeption","emty valuue to float");
+            converter.setValue1((float) 0);
+            firstEdit.setText(String.valueOf(0));
+        }
         secondEdit.setText(String.valueOf(converter.getValue2()));
     }
     private void secondColumnEdit() {
         converter.setSelect1(firstSpinner.getSelectedItemPosition());
         converter.setSelect2(secondSpinner.getSelectedItemPosition());
-        converter.setValue2(Float.parseFloat(secondEdit.getText().toString()));
         converter.setChangeParam("second");
+        try {
+            converter.setValue2(Float.parseFloat(secondEdit.getText().toString()));
+        } catch (Exception e) {
+            Log.i("Exeption","emty valuue to float");
+            converter.setValue2((float) 0);
+            secondEdit.setText(String.valueOf(0));
+        }
         firstEdit.setText(String.valueOf(converter.getValue1()));
     }
 
